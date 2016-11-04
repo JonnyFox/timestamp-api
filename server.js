@@ -1,10 +1,15 @@
 const express = require('express');
 const datejs = require('datejs');
+const path = require('path');
 var app = express();
 
-function isEmpty(obj){
+function isEmpty(obj) {
     return Object.keys(obj).length === 0 && obj.constructor === Object;
 }
+
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname + '/index.html'));
+});
 
 app.get('/:value', (req, res) => {
     var query = req.params.value;
@@ -18,15 +23,15 @@ app.get('/:value', (req, res) => {
             date = new Date(Date.parse(query));
         }
         else {
-            date = new Date(+query*1000);
+            date = new Date(+query * 1000);
         }
-        
-        if(date && date.getTime() != 0){
-            result.unix = date.getTime()/1000|0;
+
+        if (date && date.getTime() != 0) {
+            result.unix = date.getTime() / 1000 | 0;
             result.natural = date.toString('MMMM d, yyyy');
         }
     }
-    
+
     res.json(result);
 });
 
